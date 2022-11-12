@@ -1,3 +1,4 @@
+import typing
 from dataclasses import asdict, dataclass
 
 
@@ -129,9 +130,12 @@ class Swimming(Training):
                 / self.M_IN_KM / self.duration)
 
 
-def read_package(workout_type: str, data: list[int, float]) -> Training:
+def read_package(workout_type: str, data: typing.List[int]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    training_codes = {'SWM': Swimming, 'RUN': Running, 'WLK': SportsWalking}
+    training_codes: dict[str, typing.Type[Training]] = {
+        'SWM': Swimming,
+        'RUN': Running,
+        'WLK': SportsWalking}
     if workout_type not in training_codes:
         raise KeyError('Такого кода тренировки не существует!')
     return training_codes[workout_type](*data)
